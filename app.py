@@ -54,23 +54,29 @@ class SetFrameRange(Application):
         if new_in is None or new_out is None:
             message =  "Shotgun has not yet been populated with \n"
             message += "in and out frame data for this Shot."
-            QtGui.QMessageBox.information(None, "No data in Shotgun!", message)
-            return
-            
-        # now update the frame range.
-        # because the frame range is often set in multiple places (e.g render range,
-        # current range, anim range etc), we go ahead an update every time, even if
-        # the values in Shotgun are the same as the values reported via get_current_frame_range()
-        self.set_frame_range(self.engine.name, new_in, new_out)
-        
-        message =  "Your scene has been updated with the \n"
-        message += "latest frame ranges from shotgun.\n\n"
-        message += "Previous start frame: %s\n" % current_in
-        message += "New start frame: %s\n\n" % new_in
-        message += "Previous end frame: %s\n" % current_out
-        message += "New end frame: %s\n\n" % new_out
-        
-        QtGui.QMessageBox.information(None, "Frame range updated!", message)
+
+        elif int(new_in) != int(current_in) or int(new_out) != int(current_out) or int(new_range_in) != int(current_range_in) or  int(new_range_out) != int(current_range_out):
+            # change!
+            message =  "Your scene has been updated with the \n"
+            message += "latest frame ranges from shotgun.\n\n"
+            message += "Previous start frame: %d (handle: %d)\n" % (current_in, current_range_in)
+            message += "New start frame: %d (handle: %d)\n\n" % (new_in, new_range_in)
+            message += "Previous end frame: %d (handle: %d)\n" % (current_out, current_range_out)
+            message += "New end frame: %d (handle: %d)\n\n" % (new_out, new_range_out)
+            self.set_frame_range(self.engine.name, new_in, new_out, new_range_in, new_range_out)
+
+        else:
+            # no change
+            message = "Already up to date!\n\n"
+            message += "Your scene is already in sync with the\n"
+            message += "start and end frames in shotgun.\n\n"
+            message += "No changes were made."
+
+        # present a pyside dialog
+        # lazy import so that this script still loads in batch mode
+        from tank.platform.qt import QtCore, QtGui
+
+        QtGui.QMessageBox.information(None, "Frame Range Updated", message)
 
 
 
