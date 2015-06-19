@@ -203,9 +203,9 @@ class SetFrameRange(Application):
             nuke.root()["last_frame"].setValue(out_range)
 
             for n in nuke.allNodes('Viewer'):
-                n['frame_range_lock'].setValue(False)
-                n['frame_range'].setValue('%i-%i' % (int(in_frame), int(out_frame)))
                 n['frame_range_lock'].setValue(True)
+                n['frame_range'].setValue('%i-%i' % (int(in_frame), int(out_frame)))
+
             # and lock again
             #if locked:
             nuke.root()["lock_range"].setValue(True)
