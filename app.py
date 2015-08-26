@@ -154,24 +154,23 @@ class SetFrameRange(Application):
                 current_in = range_in
                 current_out = range_out
 
+        elif engine == "tk-motionbuilder":
+            from pyfbsdk import FBPlayerControl, FBTime
 
-        # elif engine == "tk-motionbuilder":
-        #     from pyfbsdk import FBPlayerControl, FBTime
+            lPlayer = FBPlayerControl()
+            current_in = lPlayer.LoopStart.GetFrame()
+            current_out = lPlayer.LoopStop.GetFrame()
 
-        #     lPlayer = FBPlayerControl()
-        #     current_in = lPlayer.LoopStart.GetFrame()
-        #     current_out = lPlayer.LoopStop.GetFrame()
+        elif engine == "tk-softimage":
+            import win32com
+            xsi = win32com.client.Dispatch('XSI.Application')
 
-        # elif engine == "tk-softimage":
-        #     import win32com
-        #     xsi = win32com.client.Dispatch('XSI.Application')
+            current_in = xsi.GetValue("PlayControl.In")
+            current_out = xsi.GetValue("PlayControl.Out")
 
-        #     current_in = xsi.GetValue("PlayControl.In")
-        #     current_out = xsi.GetValue("PlayControl.Out")
-
-        # elif engine == "tk-houdini":
-        #     import hou
-        #     current_in, current_out = hou.playbar.playbackRange()
+        elif engine == "tk-houdini":
+            import hou
+            current_in, current_out = hou.playbar.playbackRange()
 
         elif engine == "tk-3dsmax":
             from Py3dsMax import mxs
