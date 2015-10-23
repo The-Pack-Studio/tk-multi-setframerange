@@ -171,7 +171,10 @@ class SetFrameRange(Application):
         elif engine == "tk-houdini":
             import hou
             current_in, current_out = hou.playbar.playbackRange()
-
+            current_in = int(current_in)
+            current_out = int(current_out )
+            range_in = int( hou.expandString("$FSTART") )
+            range_out = int ( hou.expandString("$FEND") )
         elif engine == "tk-3dsmax":
             from Py3dsMax import mxs
             current_in = mxs.animationRange.start
@@ -248,7 +251,7 @@ class SetFrameRange(Application):
         elif engine == "tk-houdini":
             import hou
             # We have to use hscript until SideFX gets around to implementing hou.setGlobalFrameRange()
-            hou.hscript("tset `((%s-1)/$FPS)` `(%s/$FPS)`" % (in_frame, out_frame))            
+            hou.hscript("tset `((%s-1)/$FPS)` `(%s/$FPS)`" % (in_range, out_range))            
             hou.playbar.setPlaybackRange(in_frame, out_frame)
 
         elif engine == "tk-3dsmax":
