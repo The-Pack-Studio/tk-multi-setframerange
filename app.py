@@ -192,11 +192,12 @@ class SetFrameRange(Application):
         if engine == "tk-maya":
             import pymel.core as pm
             
+            print  in_frame, out_frame, in_range, out_range
             # set frame ranges for plackback
-            pm.playbackOptions(minTime=in_frame, 
+            pm.playbackOptions(minTime=in_frame,  #     Sets the start of the playback time range
                                maxTime=out_frame,
-                               animationStartTime=in_frame,
-                               animationEndTime=out_frame)
+                               animationStartTime=in_range, # Sets the start time of the animation
+                               animationEndTime=out_range)
             
             # set frame ranges for rendering
             defaultRenderGlobals=pm.PyNode('defaultRenderGlobals')
